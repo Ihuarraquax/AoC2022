@@ -1,5 +1,5 @@
 ﻿using AoC2022;
-using AoC2022.SectionAssigments;
+using AoC2022.SectionAssigment;
 
 namespace AoC2022Tests.Day04;
 

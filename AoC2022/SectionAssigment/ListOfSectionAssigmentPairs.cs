@@ -1,4 +1,4 @@
-﻿namespace AoC2022.SectionAssigments;
+﻿namespace AoC2022.SectionAssigment;
 
 public class ListOfSectionAssigmentPairs
 {
