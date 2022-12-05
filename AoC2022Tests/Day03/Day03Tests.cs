@@ -1,6 +1,5 @@
 ﻿using AoC2022;
-using AoC2022.RockPaperScissors;
-using FluentAssertions;
+using AoC2022.Rucksacks;
 
 namespace AoC2022Tests.Day03;
 

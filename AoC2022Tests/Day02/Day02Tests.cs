@@ -1,5 +1,4 @@
 ﻿using AoC2022.RockPaperScissors;
-using FluentAssertions;
 
 namespace AoC2022Tests.Day02;
 
