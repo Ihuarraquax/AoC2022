@@ -1,4 +1,3 @@
-using AoC2022;
 using AoC2022.Calories;
 
 namespace AoC2022Tests.Day01;

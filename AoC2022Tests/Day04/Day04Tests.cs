@@ -1,5 +1,4 @@
-﻿using AoC2022;
-using AoC2022.SectionAssigment;
+﻿using AoC2022.SectionAssigment;
 
 namespace AoC2022Tests.Day04;
 

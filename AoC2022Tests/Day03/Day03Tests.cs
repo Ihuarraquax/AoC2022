@@ -1,5 +1,4 @@
-﻿using AoC2022;
-using AoC2022.Rucksacks;
+﻿using AoC2022.Rucksacks;
 
 namespace AoC2022Tests.Day03;
 

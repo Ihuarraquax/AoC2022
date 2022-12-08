@@ -1,34 +1,5 @@
 ﻿namespace AoC2022.SectionAssigment;
 
-public class AssigmentRange
-{
-    public int Start { get; }
-    public int End { get; }
-
-    public AssigmentRange(string range)
-    {
-        var rangeArray = range.Split("-").Select(int.Parse).ToArray();
-        Start = rangeArray[0];
-        End = rangeArray[1];
-    }
-}
-
-public class AssigmentSections
-{
-    public AssigmentSections(AssigmentRange range)
-    {
-        Sections = Enumerable.Range(range.Start, range.End + 1 - range.Start);
-    }
-
-    private IEnumerable<int> Sections { get; }
-
-    public bool FullyContains(AssigmentSections otherSection) => 
-        Sections.Except(otherSection.Sections).Any() is false;
-
-    public bool OverlapsWith(AssigmentSections otherSection) => 
-        Sections.Any(otherSection.Sections.Contains);
-}
-
 public class SectionAssigmentPair
 {
     private readonly AssigmentSections firstSections;
