@@ -147,6 +147,6 @@ public class Day05Tests
             crane.ExecuteCommand(command);
         }
 
-        hold.GetTopStackMessage().Should().Be("FWSHSPJWM");
+        hold.GetTopStackMessage().Should().Be("PWPWHGFZS");
     }
 }
