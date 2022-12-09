@@ -43,5 +43,11 @@ public class Day07Tests
         var explorer = new FileSystemExplorer(System.IO.File.ReadAllLines("Day07/answer.txt"));
 
         explorer.Path.FindDirectoriesWhere(_ => _.TotalSize <= 100000).Sum(_ => _.TotalSize).Should().Be(1501149);
+
+        var unusedSpace = 70000000 - explorer.Path.RootDirectory.TotalSize;
+
+        var spaceToRecover = 30000000 - unusedSpace;
+
+        explorer.Path.FindDirectoriesWhere(_ => _.TotalSize >= spaceToRecover).MinBy(_ => _.TotalSize).TotalSize.Should().Be(10096985);
     }
 }
