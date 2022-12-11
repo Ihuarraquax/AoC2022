@@ -1,143 +1,87 @@
-﻿using System.Drawing;
-
-namespace AoC2022.TreeHouse;
+﻿namespace AoC2022.TreeHouse;
 
 public class Forest
 {
-    private List<Tree> Trees = new();
-    private int colDimensionCount;
-    private int rowDimensionCount;
+    private readonly List<Tree> trees;
 
-    public Forest(int[,] treesGrid)
+    public Forest(List<Tree> trees)
     {
-        for (var col = 0; col < treesGrid.GetLength(0); col++)
-        {
-            for (var row = 0; row < treesGrid.GetLength(1); row++)
-            {
-                Trees.Add(new Tree(row, col, treesGrid[row, col]));
-            }
-        }
-
-        CalculateDimensions();
-    }
-
-    public Forest(List<string> lines)
-    {
-        for (var col = 0; col < lines.Count(); col++)
-        {
-            for (int row = 0; row < lines[col].Length; row++)
-            {
-                Trees.Add(new Tree(row, col, int.Parse(lines[row][col].ToString())));
-            }
-        }
-
-        CalculateDimensions();
-    }
-
-    private void CalculateDimensions()
-    {
-        colDimensionCount = Trees.Count(_ => _.Row == 0);
-        rowDimensionCount = Trees.Count(_ => _.Col == 0);
+        this.trees = trees;
     }
 
     public bool IsVisible(int row, int col) =>
-        IsVisible(Trees.First(_ => _.Col == col && _.Row == row));
+        IsVisible(TreeAt(row, col));
+
+
+    public Tree? TreeAt(int row, int col) => trees.FirstOrDefault(_ => _.Col == col && _.Row == row);
 
     public bool IsVisible(Tree tree)
     {
         return IsVisibleFromLeft() || IsVisibleFromRight() || IsVisibleFromTop() || IsVisibleFromBottom();
 
-        bool IsVisibleFromLeft() => Trees.Where(t => t.Col < tree.Col && t.Row == tree.Row)
+        bool IsVisibleFromLeft() => trees.Where(t => t.Col < tree.Col && t.Row == tree.Row)
             .All(_ => _.Height < tree.Height);
 
-        bool IsVisibleFromRight() => Trees.Where(t => t.Col > tree.Col && t.Row == tree.Row)
+        bool IsVisibleFromRight() => trees.Where(t => t.Col > tree.Col && t.Row == tree.Row)
             .All(_ => _.Height < tree.Height);
 
-        bool IsVisibleFromTop() => Trees.Where(t => t.Col == tree.Col && t.Row < tree.Row)
+        bool IsVisibleFromTop() => trees.Where(t => t.Col == tree.Col && t.Row < tree.Row)
             .All(_ => _.Height < tree.Height);
 
         bool IsVisibleFromBottom() =>
-            Trees.Where(t => t.Col == tree.Col && t.Row > tree.Row)
+            trees.Where(t => t.Col == tree.Col && t.Row > tree.Row)
                 .All(_ => _.Height < tree.Height);
     }
 
-    public IEnumerable<Tree> GetVisibleTrees()
+    public IEnumerable<Tree> GetVisibleTrees() =>
+        trees.Where(IsVisible);
+
+    public int GetHighestScenicScore() =>
+        GetVisibleTrees().Max(GetScenicScore);
+
+    public int GetScenicScore(int row, int col)
+        => GetScenicScore(TreeAt(row, col));
+
+    public int GetScenicScore(Tree tree) =>
+        ScenicScoreFromLeft(tree) * ScenicScoreFromRight(tree) * ScenicScoreFromTop(tree) * ScenicScoreFromBottom(tree);
+
+    public int ScenicScoreFromLeft(Tree tree)
     {
-        return Trees.Where(IsVisible);
+        return ScenicScoreForDirection(tree, 0, -1);
     }
 
-    public int GetHighestScenicScore()
+    public int ScenicScoreFromRight(Tree tree)
     {
-        return GetVisibleTrees().Max(GetScenicScore);
+        return ScenicScoreForDirection(tree, 0, 1);
     }
 
-    public int GetScenicScore(int x, int y)
-        => GetScenicScore(Trees.First(_ => _.Col == x && _.Row == y));
-
-    public int GetScenicScore(Tree tree)
+    public int ScenicScoreFromTop(Tree tree)
     {
-        return ScoreFromLeft(tree) * ScoreFromRight(tree) * ScoreFromTop(tree) * ScoreFromBottom(tree);
+        return ScenicScoreForDirection(tree, -1, 0);
     }
 
-    public int ScoreFromLeft(Tree tree)
+    public int ScenicScoreFromBottom(Tree tree)
     {
-        var canSeeTrees = 0;
-        var col = tree.Col--;
+        return ScenicScoreForDirection(tree, 1, 0);
+    }
+    
+    private int ScenicScoreForDirection(Tree tree, int rowModifier, int colModifier)
+    {
+        var col = tree.Col;
+        var row = tree.Row;
+        var score = 0;
 
-        while (col >= 0 && Trees.First(_ => _.Col == col && _.Row == tree.Row).Height <
-               tree.Height)
+        while (true)
         {
-            canSeeTrees++;
-            col--;
+            if (TreeAt(row + rowModifier, col + colModifier) is not { } nextTree)
+                return score;
+
+            score++;
+            if (nextTree.Height >= tree.Height)
+                return score;
+
+            col += colModifier;
+            row += rowModifier;
         }
-
-        return canSeeTrees;
     }
-
-    public int ScoreFromRight(Tree tree)
-    {
-        var canSeeTrees = 0;
-        var col = tree.Col++;
-
-        while (col < colDimensionCount &&
-               Trees.First(_ => _.Col == col && _.Row == tree.Row).Height < tree.Height)
-        {
-            canSeeTrees++;
-            col++;
-        }
-
-        return canSeeTrees;
-    }
-
-    public int ScoreFromTop(Tree tree)
-    {
-        var canSeeTrees = 0;
-        var row = tree.Row--;
-
-        while (row >= 0 && Trees.First(_ => _.Row == row && _.Col == tree.Col).Height <
-               tree.Height)
-        {
-            canSeeTrees++;
-            row--;
-        }
-
-        return canSeeTrees;
-    }
-
-    public int ScoreFromBottom(Tree tree)
-    {
-        var canSeeTrees = 0;
-        var row = tree.Row++;
-
-        while (row < rowDimensionCount &&
-               Trees.First(_ => _.Row == row && _.Col == tree.Col).Height < tree.Height)
-        {
-            canSeeTrees++;
-            row++;
-        }
-
-        return canSeeTrees;
-    }
-
-    public Tree TreeAt(int col, int row) => Trees.First(_ => _.Col == col && _.Row == row);
 }

@@ -7,7 +7,7 @@ public class Day08Tests
     [Fact]
     public void Test1()
     {
-        var forest = new Forest(new[,]
+        var forest = ForestFactory.From(new[,]
         {
             { 3, 0, 3, 7, 3 },
             { 2, 5, 5, 1, 2 },
@@ -37,25 +37,25 @@ public class Day08Tests
         // In the bottom row, the middle 5 is visible, but the 3 and 4 are not.
         forest.IsVisible(2, 3).Should().BeTrue();
 
-        forest.ScoreFromTop(forest.TreeAt(2, 1)).Should().Be(1);
-        forest.ScoreFromLeft(forest.TreeAt(2, 1)).Should().Be(1);
-        forest.ScoreFromRight(forest.TreeAt(2, 1)).Should().Be(2);
-        forest.ScoreFromBottom(forest.TreeAt(2, 1)).Should().Be(2);
-        forest.GetScenicScore(2, 1).Should().Be(4);
+        forest.ScenicScoreFromTop(forest.TreeAt(1, 2)).Should().Be(1);
+        forest.ScenicScoreFromLeft(forest.TreeAt(1, 2)).Should().Be(1);
+        forest.ScenicScoreFromRight(forest.TreeAt(1, 2)).Should().Be(2);
+        forest.ScenicScoreFromBottom(forest.TreeAt(1, 2)).Should().Be(2);
+        forest.GetScenicScore(1, 2).Should().Be(4);
         
-        forest.ScoreFromTop(forest.TreeAt(2, 1)).Should().Be(2);
-        forest.ScoreFromLeft(forest.TreeAt(2, 1)).Should().Be(2);
-        forest.ScoreFromRight(forest.TreeAt(2, 1)).Should().Be(2);
-        forest.ScoreFromBottom(forest.TreeAt(2, 1)).Should().Be(1);
-        forest.GetScenicScore(2, 3).Should().Be(8);
+        forest.ScenicScoreFromTop(forest.TreeAt(3, 2)).Should().Be(2);
+        forest.ScenicScoreFromLeft(forest.TreeAt(3, 2)).Should().Be(2);
+        forest.ScenicScoreFromRight(forest.TreeAt(3, 2)).Should().Be(2);
+        forest.ScenicScoreFromBottom(forest.TreeAt(3, 2)).Should().Be(1);
+        forest.GetScenicScore(3, 2).Should().Be(8);
         
-        forest.GetHighestScenicScore().Should().Be(9);
+        forest.GetHighestScenicScore().Should().Be(8);
     }
     
     [Fact]
     public void Test2()
     {
-        var forest = new Forest(File.ReadLines("Day08/test.txt").ToList());
+        var forest = ForestFactory.From(File.ReadLines("Day08/test.txt").ToList());
 
         // The top-left 5 is visible from the left and top. (It isn't visible from the right or bottom since other trees of height 5 are in the way.)
         forest.IsVisible(1, 1).Should().BeTrue();
@@ -84,8 +84,9 @@ public class Day08Tests
     [Fact]
     public void Test3()
     {
-        var forest = new Forest(File.ReadLines("Day08/answer.txt").ToList());
+        var forest = ForestFactory.From(File.ReadLines("Day08/answer.txt").ToList());
 
         forest.GetVisibleTrees().Should().HaveCount(1546);
+        forest.GetHighestScenicScore().Should().Be(519064);
     }
 }
