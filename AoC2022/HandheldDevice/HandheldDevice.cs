@@ -1,4 +1,4 @@
-﻿namespace AoC2022;
+﻿namespace AoC2022.HandheldDevice;
 
 public class HandheldDevice
 {
