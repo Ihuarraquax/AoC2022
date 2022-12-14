@@ -2,9 +2,9 @@
 
 public class Item
 {
-    public int WorryLevel { get; set; }
+    public ulong WorryLevel { get; set; }
 
-    public Item(int worryLevel)
+    public Item(ulong worryLevel)
     {
         WorryLevel = worryLevel;
     }

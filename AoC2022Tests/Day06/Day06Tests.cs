@@ -1,5 +1,4 @@
-﻿using AoC2022;
-using AoC2022.HandheldDevice;
+﻿using AoC2022.HandheldDevice;
 
 namespace AoC2022Tests.Day06;
 

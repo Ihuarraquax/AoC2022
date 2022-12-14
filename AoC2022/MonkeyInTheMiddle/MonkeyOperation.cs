@@ -14,16 +14,19 @@ public class MonkeyOperation
         right = tokens[2];
     }
 
-    public int CalculateNew(int old)
+    public ulong CalculateNew(ulong old)
     {
-        var leftValue = left == "old" ? old : int.Parse(left);
-        var rightValue = right == "old" ? old : int.Parse(right);
-
-        return mathOperator switch
+        checked
         {
-            "*" => leftValue * rightValue,
-            "+" => leftValue + rightValue,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+            var leftValue = left == "old" ? old : ulong.Parse(left);
+            var rightValue = right == "old" ? old : ulong.Parse(right);
+
+            return mathOperator switch
+            {
+                "*" => leftValue * rightValue,
+                "+" => leftValue + rightValue,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
     }
 }

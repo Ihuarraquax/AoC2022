@@ -7,10 +7,10 @@ public class Day11Tests
     [Fact]
     public void Test1()
     {
-        var monkey0 = new Monkey(new[] { 79, 98 }, new MonkeyOperation("old * 19"), 23);
-        var monkey1 = new Monkey(new[] { 54, 65, 75, 74 }, new MonkeyOperation("old + 6"), 19);
-        var monkey2 = new Monkey(new[] { 79, 60, 97 }, new MonkeyOperation("old * old"), 13);
-        var monkey3 = new Monkey(new[] { 74 }, new MonkeyOperation("old + 3"), 17);
+        var monkey0 = new Monkey(new ulong[] { 79, 98 }, new MonkeyOperation("old * 19"), 23);
+        var monkey1 = new Monkey(new ulong[] { 54, 65, 75, 74 }, new MonkeyOperation("old + 6"), 19);
+        var monkey2 = new Monkey(new ulong[] { 79, 60, 97 }, new MonkeyOperation("old * old"), 13);
+        var monkey3 = new Monkey(new ulong[] { 74 }, new MonkeyOperation("old + 3"), 17);
 
         monkey0.SetTrueMonkey(monkey2);
         monkey0.SetFalseMonkey(monkey3);
@@ -25,6 +25,7 @@ public class Day11Tests
         monkey3.SetFalseMonkey(monkey1);
 
         // monke 0
+        monkey0.InspectItem();
         monkey0.InspectingItem.WorryLevel.Should().Be(79);
         monkey0.CalculateWorryLevel();
         monkey0.InspectingItem.WorryLevel.Should().Be(1501);
@@ -35,6 +36,7 @@ public class Day11Tests
         monkey3.LastItemToInspect.WorryLevel.Should().Be(500);
 
 
+        monkey0.InspectItem();
         monkey0.InspectingItem.WorryLevel.Should().Be(98);
         monkey0.CalculateWorryLevel();
         monkey0.InspectingItem.WorryLevel.Should().Be(1862);
@@ -45,6 +47,7 @@ public class Day11Tests
         monkey3.LastItemToInspect.WorryLevel.Should().Be(620);
 
         // monke 1
+        monkey1.InspectItem();
         monkey1.InspectingItem.WorryLevel.Should().Be(54);
         monkey1.CalculateWorryLevel();
         monkey1.InspectingItem.WorryLevel.Should().Be(60);
@@ -55,6 +58,7 @@ public class Day11Tests
         monkey0.LastItemToInspect.WorryLevel.Should().Be(20);
 
 
+        monkey1.InspectItem();
         monkey1.InspectingItem.WorryLevel.Should().Be(65);
         monkey1.CalculateWorryLevel();
         monkey1.InspectingItem.WorryLevel.Should().Be(71);
@@ -64,6 +68,7 @@ public class Day11Tests
 
         monkey0.LastItemToInspect.WorryLevel.Should().Be(23);
 
+        monkey1.InspectItem();
         monkey1.InspectingItem.WorryLevel.Should().Be(75);
         monkey1.CalculateWorryLevel();
         monkey1.InspectingItem.WorryLevel.Should().Be(81);
@@ -73,7 +78,7 @@ public class Day11Tests
 
         monkey0.LastItemToInspect.WorryLevel.Should().Be(27);
 
-
+        monkey1.InspectItem();
         monkey1.InspectingItem.WorryLevel.Should().Be(74);
         monkey1.CalculateWorryLevel();
         monkey1.InspectingItem.WorryLevel.Should().Be(80);
@@ -84,6 +89,7 @@ public class Day11Tests
         monkey0.LastItemToInspect.WorryLevel.Should().Be(26);
 
         // monke 2
+        monkey2.InspectItem();
         monkey2.InspectingItem.WorryLevel.Should().Be(79);
         monkey2.CalculateWorryLevel();
         monkey2.InspectingItem.WorryLevel.Should().Be(6241);
@@ -93,7 +99,7 @@ public class Day11Tests
 
         monkey1.LastItemToInspect.WorryLevel.Should().Be(2080);
 
-
+        monkey2.InspectItem();
         monkey2.InspectingItem.WorryLevel.Should().Be(60);
         monkey2.CalculateWorryLevel();
         monkey2.InspectingItem.WorryLevel.Should().Be(3600);
@@ -103,7 +109,7 @@ public class Day11Tests
 
         monkey3.LastItemToInspect.WorryLevel.Should().Be(1200);
 
-
+        monkey2.InspectItem();
         monkey2.InspectingItem.WorryLevel.Should().Be(97);
         monkey2.CalculateWorryLevel();
         monkey2.InspectingItem.WorryLevel.Should().Be(9409);
@@ -114,6 +120,7 @@ public class Day11Tests
         monkey3.LastItemToInspect.WorryLevel.Should().Be(3136);
 
         // monke 3
+        monkey3.InspectItem();
         monkey3.InspectingItem.WorryLevel.Should().Be(74);
         monkey3.CalculateWorryLevel();
         monkey3.InspectingItem.WorryLevel.Should().Be(77);
@@ -123,7 +130,7 @@ public class Day11Tests
 
         monkey1.LastItemToInspect.WorryLevel.Should().Be(25);
 
-
+        monkey3.InspectItem();
         monkey3.InspectingItem.WorryLevel.Should().Be(500);
         monkey3.CalculateWorryLevel();
         monkey3.InspectingItem.WorryLevel.Should().Be(503);
@@ -133,7 +140,7 @@ public class Day11Tests
 
         monkey1.LastItemToInspect.WorryLevel.Should().Be(167);
 
-
+        monkey3.InspectItem();
         monkey3.InspectingItem.WorryLevel.Should().Be(620);
         monkey3.CalculateWorryLevel();
         monkey3.InspectingItem.WorryLevel.Should().Be(623);
@@ -143,7 +150,7 @@ public class Day11Tests
 
         monkey1.LastItemToInspect.WorryLevel.Should().Be(207);
 
-
+        monkey3.InspectItem();
         monkey3.InspectingItem.WorryLevel.Should().Be(1200);
         monkey3.CalculateWorryLevel();
         monkey3.InspectingItem.WorryLevel.Should().Be(1203);
@@ -153,7 +160,7 @@ public class Day11Tests
 
         monkey1.LastItemToInspect.WorryLevel.Should().Be(401);
 
-
+        monkey3.InspectItem();
         monkey3.InspectingItem.WorryLevel.Should().Be(3136);
         monkey3.CalculateWorryLevel();
         monkey3.InspectingItem.WorryLevel.Should().Be(3139);
@@ -251,5 +258,91 @@ public class Day11Tests
         monkey3.InspectedItemsCount.Should().Be(105);
         
         game.GetLevelOfMonkeyBusiness().Should().Be(10605);
+    }
+
+    [Fact]
+    public void Test2()
+    {
+        var game = GameFactory.From(File.ReadAllLines("Day11/test.txt"));
+        
+        game.PlayRound(20);
+        game.Round.Should().Be(20);
+        game.Monkeys[0].InspectedItemsCount.Should().Be(101);
+        game.Monkeys[1].InspectedItemsCount.Should().Be(95);
+        game.Monkeys[2].InspectedItemsCount.Should().Be(7);
+        game.Monkeys[3].InspectedItemsCount.Should().Be(105);
+        
+        game.GetLevelOfMonkeyBusiness().Should().Be(10605);
+    }
+    
+    [Fact]
+    public void Test3()
+    {
+        var game = GameFactory.From(File.ReadAllLines("Day11/answer.txt"));
+        game.PlayRound(20);
+        game.GetLevelOfMonkeyBusiness().Should().Be(102399);
+        
+    }
+    
+    [Fact]
+    public void Test4()
+    {
+        var monkey0 = new Monkey(new ulong[] { 79, 98 }, new MonkeyOperation("old * 19"), 23, false);
+        var monkey1 = new Monkey(new ulong[] { 54, 65, 75, 74 }, new MonkeyOperation("old + 6"), 19, false);
+        var monkey2 = new Monkey(new ulong[] { 79, 60, 97 }, new MonkeyOperation("old * old"), 13, false);
+        var monkey3 = new Monkey(new ulong[] { 74 }, new MonkeyOperation("old + 3"), 17, false);
+
+        monkey0.SetTrueMonkey(monkey2);
+        monkey0.SetFalseMonkey(monkey3);
+
+        monkey1.SetTrueMonkey(monkey2);
+        monkey1.SetFalseMonkey(monkey0);
+
+        monkey2.SetTrueMonkey(monkey1);
+        monkey2.SetFalseMonkey(monkey3);
+
+        monkey3.SetTrueMonkey(monkey0);
+        monkey3.SetFalseMonkey(monkey1);
+
+       var game =new Game(monkey0, monkey1, monkey2, monkey3);
+        
+        game.PlayRound(1);
+        game.Monkeys[0].InspectedItemsCount.Should().Be(2);
+        game.Monkeys[1].InspectedItemsCount.Should().Be(4);
+        game.Monkeys[2].InspectedItemsCount.Should().Be(3);
+        game.Monkeys[3].InspectedItemsCount.Should().Be(6);
+        
+        game.PlayRound(19);
+        game.Round.Should().Be(20);
+        game.Monkeys[0].InspectedItemsCount.Should().Be(99);
+        game.Monkeys[1].InspectedItemsCount.Should().Be(97);
+        game.Monkeys[2].InspectedItemsCount.Should().Be(8);
+        game.Monkeys[3].InspectedItemsCount.Should().Be(103);        
+        
+        game.PlayRound(980);
+        game.Round.Should().Be(1000);
+        game.Monkeys[0].InspectedItemsCount.Should().Be(5204);
+        game.Monkeys[1].InspectedItemsCount.Should().Be(4792);
+        game.Monkeys[2].InspectedItemsCount.Should().Be(199);
+        game.Monkeys[3].InspectedItemsCount.Should().Be(5192);
+        
+    }
+    
+    [Fact]
+    public void Test5()
+    {
+        var game = GameFactory.From(File.ReadAllLines("Day11/test.txt"), false);
+        
+        game.PlayRound(10000);
+        game.GetLevelOfMonkeyBusiness().Should().Be(2713310158);
+    }
+
+    [Fact]
+    public void Test6()
+    {
+        var game = GameFactory.From(File.ReadAllLines("Day11/answer.txt"), false);
+        
+        game.PlayRound(10000);
+        game.GetLevelOfMonkeyBusiness().Should().Be(23641658401);
     }
 }

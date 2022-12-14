@@ -2,51 +2,55 @@
 
 public class Monkey
 {
+    public static int Equalizer;
+
     private readonly MonkeyOperation operation;
-    private readonly int testDivisibleBy;
+    public readonly int TestDivisibleBy;
+    private readonly bool relief;
     private readonly Queue<Item> queue;
     private Monkey trueMonkey;
     private Monkey falseMonkey;
 
-    private Item? NextItem => queue.TryDequeue(out var item) ? item : null;
+    private Item NextItem => queue.Dequeue();
     public Item? InspectingItem { get; set; }
     public Item LastItemToInspect => queue.Last();
-    public int[] Items => queue.Select(_ => _.WorryLevel).ToArray();
+    public ulong[] Items => queue.Select(_ => _.WorryLevel).ToArray();
     public int InspectedItemsCount { get; private set; }
 
-    public Monkey(int[] startingItems, MonkeyOperation operation, int testDivisibleBy)
+    public Monkey(ulong[] startingItems, MonkeyOperation operation, int testDivisibleBy, bool relief = true)
     {
         this.operation = operation;
-        this.testDivisibleBy = testDivisibleBy;
+        this.TestDivisibleBy = testDivisibleBy;
+        this.relief = relief;
         queue = new Queue<Item>(startingItems.Select(worryLevel => new Item(worryLevel)));
-        InspectItem();
     }
 
-    private void InspectItem()
+    public void InspectItem()
     {
-        if (InspectingItem is not null) return;
         InspectingItem = NextItem;
-    }
-
-    private void ItemIsThrownAway()
-    {
-        InspectingItem = null;
         InspectedItemsCount++;
     }
 
-    public bool HasMoreItemsToInspect() => InspectingItem is not null || queue.Count > 0;
+    public bool HasMoreItemsToInspect() => queue.Count > 0;
 
     public void SetTrueMonkey(Monkey monkey) => trueMonkey = monkey;
     public void SetFalseMonkey(Monkey monkey) => falseMonkey = monkey;
 
     public void CalculateWorryLevel()
     {
-        InspectingItem.WorryLevel = operation.CalculateNew(InspectingItem.WorryLevel);
+        if (relief)
+        {
+            InspectingItem.WorryLevel = operation.CalculateNew(InspectingItem.WorryLevel);
+        }
+        else
+        {
+            InspectingItem.WorryLevel = operation.CalculateNew(InspectingItem.WorryLevel) % (ulong)Equalizer;
+        }
     }
 
     public void GetBored()
     {
-        InspectingItem.WorryLevel /= 3;
+        InspectingItem.WorryLevel = InspectingItem.WorryLevel /= 3;
     }
 
     public void ThrowItemToMonkey()
@@ -54,8 +58,6 @@ public class Monkey
         var monkeyToThrow = ChooseTargetMonkey();
 
         monkeyToThrow.Catch(InspectingItem);
-        ItemIsThrownAway();
-        InspectItem();
     }
 
     private void Catch(Item item) =>
@@ -63,14 +65,19 @@ public class Monkey
 
     private Monkey ChooseTargetMonkey()
     {
-        return InspectingItem.WorryLevel % testDivisibleBy == 0 ? trueMonkey : falseMonkey;
+        return InspectingItem.WorryLevel % (ulong)TestDivisibleBy == 0 ? trueMonkey : falseMonkey;
     }
 
     public void TakeTurn()
     {
         InspectItem();
         CalculateWorryLevel();
-        GetBored();
+
+        if (relief)
+        {
+            GetBored();
+        }
+
         ThrowItemToMonkey();
     }
 }
